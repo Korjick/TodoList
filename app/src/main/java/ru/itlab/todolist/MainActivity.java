@@ -18,8 +18,7 @@ import java.util.Stack;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Random random;
-    private List<Note> notes;
+
     private LayoutInflater layoutInflater;
     private LinearLayoutCompat linearLayoutCompat;
 
@@ -29,15 +28,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         linearLayoutCompat = findViewById(R.id.linerLayout);
-
-        random = new Random();
-        notes = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            notes.add(new Note(random.nextInt(3), "Note: " + i));
-        }
-
         layoutInflater = getLayoutInflater();
 
+        List<Note> notes = Database.instance.getNotes();
         for (int i = 0; i < notes.size(); i++) {
             TextView note = (TextView) layoutInflater.inflate(R.layout.note, null, false);
             linearLayoutCompat.addView(note);
