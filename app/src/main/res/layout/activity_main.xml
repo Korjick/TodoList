@@ -15,10 +15,11 @@
 
     </androidx.appcompat.widget.LinearLayoutCompat>
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton2"
+        android:id="@+id/floating"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"
-        app:srcCompat="@android:drawable/ic_menu_add"
+        app:srcCompat="@android:drawable/ic_input_add"
+        android:tint="@android:color/background_light"
         android:layout_gravity="end|bottom"/>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

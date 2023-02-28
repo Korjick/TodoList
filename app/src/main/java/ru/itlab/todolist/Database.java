@@ -19,14 +19,12 @@ public class Database {
         notes = new ArrayList<>();
         random = new Random();
         for (int i = 0; i < 5; i++) {
-            notes.add(new Note(random.nextInt(3),
-                    "Note: " + i));
+            notes.add(new Note(random.nextInt(3), "Random Note: " + i));
         }
     }
 
     public void addNote(int priority, String description){
-        // new Note()
-        // finish()
+        notes.add(new Note(priority, description));
     }
 
     public List<Note> getNotes(){
