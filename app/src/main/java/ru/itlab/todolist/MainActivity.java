@@ -27,12 +27,36 @@ public class MainActivity extends AppCompatActivity {
     private FloatingActionButton floatingActionButton;
 
     @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        linearLayoutCompat = findViewById(R.id.linerLayout);
+        layoutInflater = getLayoutInflater();
+        floatingActionButton = findViewById(R.id.floating);
+
+        floatingActionButton.setOnClickListener(view -> {
+            Intent intent = new Intent(MainActivity.this, AddNewNoteActivity.class);
+            startActivity(intent);
+        });
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
+        redraw();
+    }
+
+    private void redraw(){
         linearLayoutCompat.removeAllViews();
         List<Note> notes = Database.instance.getNotes();
         for (int i = 0; i < notes.size(); i++) {
             TextView note = (TextView) layoutInflater.inflate(R.layout.note, null, false);
+            int finalI = i;
+            note.setOnClickListener(view -> {
+                Database.instance.remove(finalI);
+                redraw();
+            });
             linearLayoutCompat.addView(note);
             note.setText(notes.get(i).text);
             switch (notes.get(i).priority) {
@@ -47,20 +71,5 @@ public class MainActivity extends AppCompatActivity {
                     break;
             }
         }
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        linearLayoutCompat = findViewById(R.id.linerLayout);
-        layoutInflater = getLayoutInflater();
-        floatingActionButton = findViewById(R.id.floating);
-
-        floatingActionButton.setOnClickListener(view -> {
-            Intent intent = new Intent(MainActivity.this, AddNewNoteActivity.class);
-            startActivity(intent);
-        });
     }
 }

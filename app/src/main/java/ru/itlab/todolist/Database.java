@@ -27,6 +27,10 @@ public class Database {
         notes.add(new Note(priority, description));
     }
 
+    public void remove(int idx) {
+        notes.remove(idx);
+    }
+
     public List<Note> getNotes(){
         return new ArrayList<>(notes);
     }
