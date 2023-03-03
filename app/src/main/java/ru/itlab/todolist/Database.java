@@ -18,17 +18,13 @@ public class Database {
     private Database() {
         notes = new ArrayList<>();
         random = new Random();
-        for (int i = 0; i < 2000000; i++) {
+        for (int i = 0; i < 20000; i++) {
             notes.add(new Note(random.nextInt(3), "Random Note: " + i));
         }
     }
 
     public void addNote(int priority, String description){
         notes.add(new Note(priority, description));
-    }
-
-    public void remove(int idx) {
-        notes.remove(idx);
     }
 
     public List<Note> getNotes(){
