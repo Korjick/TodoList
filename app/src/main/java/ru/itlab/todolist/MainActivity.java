@@ -2,6 +2,8 @@ package ru.itlab.todolist;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.LinearLayoutCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,54 +24,26 @@ import java.util.Stack;
 
 public class MainActivity extends AppCompatActivity {
 
-    private LayoutInflater layoutInflater;
-    private LinearLayoutCompat linearLayoutCompat;
     private FloatingActionButton floatingActionButton;
+    private RecyclerView recyclerView;
+
+    private NotesAdapter notesAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        linearLayoutCompat = findViewById(R.id.linerLayout);
-        layoutInflater = getLayoutInflater();
         floatingActionButton = findViewById(R.id.floating);
+        recyclerView = findViewById(R.id.notesRecycler);
+
+        notesAdapter = new NotesAdapter(Database.instance.getNotes());
+//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(notesAdapter);
 
         floatingActionButton.setOnClickListener(view -> {
             Intent intent = new Intent(MainActivity.this, AddNewNoteActivity.class);
             startActivity(intent);
         });
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        redraw();
-    }
-
-    private void redraw(){
-        linearLayoutCompat.removeAllViews();
-        List<Note> notes = Database.instance.getNotes();
-        for (int i = 0; i < notes.size(); i++) {
-            TextView note = (TextView) layoutInflater.inflate(R.layout.note, null, false);
-            int finalI = i;
-            note.setOnClickListener(view -> {
-                Database.instance.remove(finalI);
-                redraw();
-            });
-            linearLayoutCompat.addView(note);
-            note.setText(notes.get(i).text);
-            switch (notes.get(i).priority) {
-                case 0:
-                    note.setBackgroundColor(getResources().getColor(R.color.green));
-                    break;
-                case 1:
-                    note.setBackgroundColor(getResources().getColor(R.color.yellow));
-                    break;
-                case 2:
-                    note.setBackgroundColor(getResources().getColor(R.color.red));
-                    break;
-            }
-        }
     }
 }
