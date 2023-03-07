@@ -18,7 +18,7 @@ public class Database {
     private Database() {
         notes = new ArrayList<>();
         random = new Random();
-        for (int i = 0; i < 20000; i++) {
+        for (int i = 0; i < 10; i++) {
             notes.add(new Note(random.nextInt(3), "Random Note: " + i));
         }
     }
@@ -28,6 +28,6 @@ public class Database {
     }
 
     public List<Note> getNotes(){
-        return new ArrayList<>(notes);
+        return notes;
     }
 }
