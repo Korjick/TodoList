@@ -14,10 +14,14 @@ public class AddNewNoteActivity extends AppCompatActivity {
     private RadioGroup radioGroup;
     private Button addNoteButton;
 
+    private NotesDatabase notesDatabase;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_note);
+
+        notesDatabase = NotesDatabase.getInstance(getApplication());
 
         noteDescription = findViewById(R.id.noteDescription);
         radioGroup = findViewById(R.id.radioGroup);
@@ -25,7 +29,7 @@ public class AddNewNoteActivity extends AppCompatActivity {
 
         addNoteButton.setOnClickListener(view -> {
             int idx = radioGroup.indexOfChild(radioGroup.findViewById(radioGroup.getCheckedRadioButtonId()));
-            Database.instance.addNote(idx, noteDescription.getText().toString());
+            notesDatabase.notesDAO().add(new Note(idx, noteDescription.getText().toString()));
             finish();
         });
     }

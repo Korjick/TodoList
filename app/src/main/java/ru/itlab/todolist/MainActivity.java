@@ -29,16 +29,23 @@ public class MainActivity extends AppCompatActivity {
 
     private NotesAdapter notesAdapter;
 
+    private NotesDatabase notesDatabase;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        notesDatabase = NotesDatabase.getInstance(getApplication());
+
         floatingActionButton = findViewById(R.id.floating);
         recyclerView = findViewById(R.id.notesRecycler);
 
-        notesAdapter = new NotesAdapter(Database.instance.getNotes());
-//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        notesAdapter = new NotesAdapter();
+        notesAdapter.setOnNoteClickListener(note -> {
+            notesDatabase.notesDAO().remove(note.id);
+            dataUpdated();
+        });
         recyclerView.setAdapter(notesAdapter);
 
         floatingActionButton.setOnClickListener(view -> {
@@ -50,6 +57,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        notesAdapter.notifyDataSetChanged();
+        dataUpdated();
+    }
+
+    private void dataUpdated(){
+        notesAdapter.setData(notesDatabase.notesDAO().getNotes());
     }
 }
