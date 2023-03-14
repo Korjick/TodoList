@@ -1,6 +1,7 @@
 package ru.itlab.todolist;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
 import android.view.View;
@@ -14,14 +15,18 @@ public class AddNewNoteActivity extends AppCompatActivity {
     private RadioGroup radioGroup;
     private Button addNoteButton;
 
-    private NotesDatabase notesDatabase;
+    private AddNoteActivityViewModel addNoteActivityViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_note);
 
-        notesDatabase = NotesDatabase.getInstance(getApplication());
+        addNoteActivityViewModel = new ViewModelProvider(this).get(AddNoteActivityViewModel.class);
+        addNoteActivityViewModel.getAddNoteLiveData().observe(AddNewNoteActivity.this, value -> {
+            if(value)
+                finish();
+        });
 
         noteDescription = findViewById(R.id.noteDescription);
         radioGroup = findViewById(R.id.radioGroup);
@@ -29,8 +34,7 @@ public class AddNewNoteActivity extends AppCompatActivity {
 
         addNoteButton.setOnClickListener(view -> {
             int idx = radioGroup.indexOfChild(radioGroup.findViewById(radioGroup.getCheckedRadioButtonId()));
-            notesDatabase.notesDAO().add(new Note(idx, noteDescription.getText().toString()));
-            finish();
+            addNoteActivityViewModel.add(new Note(idx, noteDescription.getText().toString()));
         });
     }
 }

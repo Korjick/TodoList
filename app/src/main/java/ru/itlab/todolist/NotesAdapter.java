@@ -8,12 +8,17 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHolder> {
 
     private List<Note> notes;
     private INoteClick noteClickListener;
+
+    public NotesAdapter(){
+        notes = new ArrayList<>();
+    }
 
     public void setData(List<Note> notes){
         this.notes = notes;
